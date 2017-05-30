@@ -1,0 +1,11 @@
+TestCase1#technology#arguments#main component#secondary component 1, secondary component 2#trigger 1, trigger 2, trigger 3
+TestCase2#selenium#parameters 1#GUI#api#smoke
+TestCase2#selenium#parameters 2#GUI#api#critical, language
+TestCase3#selenium#parameters 3#GIU#api#language
+TestCase3#selenium#parameters 4#GIU##smoke
+TestCase4#soapui#case 1#api#GUI,deepapi#critical
+TestCase4#soapui#case 2#api#GUI#smoke
+TestCase4#soapui#case 3#api#GUI,deepapi#bussines
+TestCase5#selenium#parameters 5#GUI##critical
+TestCase6#custom#custom parameters 1#deepapi##critical
+TestCase7#custom#custom parameters 1#deepapi##smoke
