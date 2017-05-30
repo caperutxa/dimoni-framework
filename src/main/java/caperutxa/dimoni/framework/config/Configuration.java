@@ -1,5 +1,9 @@
 package caperutxa.dimoni.framework.config;
 
+import java.util.List;
+
+import caperutxa.dimoni.framework.model.TestModel;
+
 /**
  * The test configuration run should be done by a current configuration
  * 
@@ -14,6 +18,8 @@ public class Configuration {
 	public static String trigger;
 	
 	public static String custom;
+	
+	public static List<TestModel> testList;
 	
 	/**
 	 * -component=
@@ -45,5 +51,13 @@ public class Configuration {
 				System.out.println("Trigger : " + trigger);
 			}
 		}
+	}
+	
+	/**
+	 * Fill the test list depending of the current configuration
+	 * 
+	 */
+	public static void getTestList() {
+		// call manager to get tests by component
 	}
 }
