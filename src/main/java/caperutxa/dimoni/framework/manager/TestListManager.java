@@ -63,7 +63,8 @@ public class TestListManager {
 	 * @return
 	 */
 	public String translatePathVariables(String line) {
-		String replacedLine = line.replace("${soapui_projects_folder}", Configuration.frameworkProperties.getProperty("soapui_projects_folder"));
+		String replacedLine = line.replace("${soapui_projects_folder}", Configuration.frameworkProperties.getProperty("soapui_projects_folder"))
+				.replace("${readyapi_projects_folder}", "");
 		return replacedLine;
 	}
 
