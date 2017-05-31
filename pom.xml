@@ -2,26 +2,52 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>caperutxa.dimoni</groupId>
   <artifactId>framework</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   
-  <name>testing framework</name>
+  <name>testing-framework</name>
   
   <properties>
+  		<framework.mainclass>caperutxa.dimoni.framework.Main</framework.mainclass>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
+		<javax.mail.version>1.5.5</javax.mail.version>
+		<javax.mail-api.version>1.5.6</javax.mail-api.version>
 		<junit.version>4.12</junit.version>
+		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
 		<maven-compiler-plugin.source.version>1.8</maven-compiler-plugin.source.version>
 		<maven-compiler-plugin.target.version>1.8</maven-compiler-plugin.target.version>
 		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+		<maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
 		<mysql-connector-java.version>6.0.5</mysql-connector-java.version>
   </properties>
   
   <dependencies>
 		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>${javax.mail.version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>${javax.mail-api.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>${maven-jar-plugin.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -42,6 +68,42 @@
 					<source>${maven-compiler-plugin.source.version}</source>
 					<target>${maven-compiler-plugin.target.version}</target>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>${framework.mainclass}</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven-shade-plugin.version}</version>
+				<executions>
+					<!-- Run shade goal on package phase -->
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>${framework.mainclass}</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

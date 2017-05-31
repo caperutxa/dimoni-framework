@@ -1,6 +1,10 @@
 package caperutxa.dimoni.framework.config;
 
 import org.junit.Test;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.junit.Assert;
 
 public class ConfigurationTest {
@@ -10,16 +14,18 @@ public class ConfigurationTest {
 		String[] args = { "-component=GUI",
 				"-environment=stage",
 				"-testscenario=bookroom",
+				"-technology=selenium",
 				"-trigger=smoke",
 				"-custom=customTest"};
 		
 		Configuration.parseParameters(args);
 		
-		Assert.assertEquals("GUI", Configuration.component);
+		Assert.assertEquals("gui", Configuration.component);
 		Assert.assertEquals("stage", Configuration.environment);
+		Assert.assertEquals("selenium", Configuration.technology);
 		Assert.assertEquals("bookroom", Configuration.testScenario);
 		Assert.assertEquals("smoke", Configuration.trigger);
-		Assert.assertEquals("customTest", Configuration.custom);
+		Assert.assertEquals("customtest", Configuration.custom);
 	}
 	
 	@Test
@@ -27,15 +33,28 @@ public class ConfigurationTest {
 		String[] args = { "-Component=GUI",
 				"-Environment=stage",
 				"-testScenario=bookroom",
+				"-technology=SoapUI",
 				"-trigger=smoke",
 				"-Custom=customTest"};
 		
 		Configuration.parseParameters(args);
 		
-		Assert.assertEquals("GUI", Configuration.component);
+		Assert.assertEquals("gui", Configuration.component);
 		Assert.assertEquals("stage", Configuration.environment);
+		Assert.assertEquals("soapui", Configuration.technology);
 		Assert.assertEquals("bookroom", Configuration.testScenario);
 		Assert.assertEquals("smoke", Configuration.trigger);
-		Assert.assertEquals("customTest", Configuration.custom);
+		Assert.assertEquals("customtest", Configuration.custom);
 	}
+	
+	@Test
+	public void loadDefaultConfigurationTest() throws FileNotFoundException, IOException {
+		Configuration.frameworkPropertiesFile = "src/test/resources/properties/frameworkTest.properties";
+		Configuration.defaultFrameworkConfiguration();
+		
+		Assert.assertEquals("test", Configuration.frameworkProperties.getProperty("default_environment"));
+		Assert.assertEquals("file", Configuration.frameworkProperties.getProperty("test_list_source"));
+		Assert.assertEquals("src/test/resources/testconfiguration/testlist.csv", Configuration.frameworkProperties.getProperty("test_list_file"));
+	}
+	
 }

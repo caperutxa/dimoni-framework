@@ -7,17 +7,22 @@ public class TestModel {
 	Date start;
 	Date end;
 	boolean result;
+	String errorMessage;
+	String failedError;
 	
+	int id;
 	String testCase;
 	String technology;
 	String parameters;
 	String components;
 	String trigger;
 	
-	public boolean run() {
-		boolean result = true;
-		
-		return true;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getStart() {
@@ -83,6 +88,21 @@ public class TestModel {
 	public void setTrigger(String trigger) {
 		this.trigger = trigger;
 	}
-	
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public String getFailedError() {
+		return failedError;
+	}
+
+	public void setFailedError(String failedError) {
+		this.failedError = failedError;
+	}
 	
 }
