@@ -8,7 +8,6 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -90,6 +89,9 @@ public class Main {
 	 * @param content
 	 */
 	static void sendMail(String content) {
+		if(!Configuration.frameworkProperties.getProperty("mail_send").equals("true"))
+			return;
+		
 		String to = Configuration.frameworkProperties.getProperty("mail_to");
 		String from = Configuration.frameworkProperties.getProperty("mail_from");
 		String host = Configuration.frameworkProperties.getProperty("mail_host");

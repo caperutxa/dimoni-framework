@@ -46,6 +46,11 @@ public class TestListManagerTest {
 		Configuration.frameworkPropertiesFile = "src/test/resources/properties/frameworkTest.properties";
 		Configuration.defaultFrameworkConfiguration();
 		
-		manager.translatePathVariables("-s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${soapui_projects_folder}\\ReadyApi\\XML-soapui-project.xml");
+		String line = manager.translatePathVariables("-s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${soapui_projects_folder}\\ReadyApi\\XML-soapui-project.xml");
+		Assert.assertTrue(line.contains("thisIsTheSoapProjectFolder"));
+		
+		line = manager.translatePathVariables("-s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${readyapi_projects_folder}\\ReadyApi\\XML-soapui-project.xml");
+		Assert.assertTrue(line.contains("thisIsTheReadyApiProjectFolder"));
+		
 	}
 }

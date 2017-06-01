@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import caperutxa.dimoni.framework.config.Configuration;
 import caperutxa.dimoni.framework.model.TestModel;
@@ -63,9 +64,11 @@ public class TestListManager {
 	 * @return
 	 */
 	public String translatePathVariables(String line) {
-		String replacedLine = line.replace("${soapui_projects_folder}", Configuration.frameworkProperties.getProperty("soapui_projects_folder"))
-				.replace("${readyapi_projects_folder}", "");
-		return replacedLine;
+		for(Entry<Object, Object> e : Configuration.frameworkProperties.entrySet()) {
+			line = line.replace("${" + e.getKey() + "}", e.getValue().toString());
+		} 
+		
+		return line;
 	}
 
 }
