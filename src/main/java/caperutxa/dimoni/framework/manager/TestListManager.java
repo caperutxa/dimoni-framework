@@ -23,7 +23,6 @@ public class TestListManager {
 			try {
 				String translated = translatePathVariables(l);
 				String[] parts = translated.split("#");
-				//if(parts[4].toLowerCase().contains(component.toLowerCase()) || parts[5].toLowerCase().contains(component.toLowerCase())) {
 				String componentList = parts[4] + "," + parts[5];
 				if(filterByComponent(componentList, component)) {
 					TestModel t = new TestModel();
