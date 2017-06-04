@@ -3,7 +3,6 @@ package caperutxa.dimoni.framework.executer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.iq80.snappy.Main;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,10 +14,7 @@ public class TestExecutionTest {
 	
 	String[] args = {"-component=XMLAPI",
 			"-environment=stage",
-			//"-testscenario=bookroom",
-			"-technology=selenium",
-			//"-trigger=smoke",
-			//"-custom=customTest"
+			"-technology=selenium"
 			};
 	
 	@Before
@@ -31,14 +27,28 @@ public class TestExecutionTest {
 		Configuration.getTestList();
 	}
 	
+	/**
+	 * The code is commented intentionally
+	 * just check that the set-up is correct
+	 * 
+	 * The test is an integration test
+	 * because it needs external installation to run tests
+	 */
 	@Test
 	public void runTestTest() {
 		//executer.runTest();
 	}
 	
+	/**
+	 * The code is commented intentionally
+	 * just check that the set-up is correct
+	 * 
+	 * The test is an integration test
+	 * because it needs external installation to run tests
+	 */
 	@Test
 	public void fullProcess() throws Exception {
-		String[] args = { "-component=XMLAPI" };
+		//String[] args = { "-component=XMLAPI" };
 		//Main.main(args);
 	}
 }
