@@ -9,3 +9,6 @@
 9#TestCase5#selenium#parameters 5#GUI##critical
 10#TestCase6#custom#custom parameters 1#deepapi##critical
 11#TestCase7#custom#custom parameters 1#deepapi##smoke
+12#TestCase5#selenium#parameters 5#GUIs##critical
+13#TestCase6#custom#custom parameters 1#apis##critical
+14#TestCase6#custom#custom parameters 1#deepapis##critical

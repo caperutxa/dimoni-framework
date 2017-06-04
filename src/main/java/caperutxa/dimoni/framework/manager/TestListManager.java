@@ -23,7 +23,9 @@ public class TestListManager {
 			try {
 				String translated = translatePathVariables(l);
 				String[] parts = translated.split("#");
-				if(parts[4].toLowerCase().contains(component.toLowerCase()) || parts[5].toLowerCase().contains(component.toLowerCase())) {
+				//if(parts[4].toLowerCase().contains(component.toLowerCase()) || parts[5].toLowerCase().contains(component.toLowerCase())) {
+				String componentList = parts[4] + "," + parts[5];
+				if(filterByComponent(componentList, component)) {
 					TestModel t = new TestModel();
 					t.setId(Integer.parseInt(parts[0]));
 					t.setTestCase(parts[1]);
@@ -34,7 +36,7 @@ public class TestListManager {
 					testList.put(t.getId(), t);
 				}
 			} catch(Exception e) {
-				System.out.println("Error while parsing test line from file : " + l + "    " + e.getMessage());
+				System.out.println("Error while parsing test line from file : " + l + "    . Error message : " + e.getMessage());
 			}
 		}
 		
@@ -69,6 +71,24 @@ public class TestListManager {
 		} 
 		
 		return line;
+	}
+	
+	/**
+	 * The test list uses the secondary components separated by commas
+	 * This method use as parameter the main component and secondary components joined by commas
+	 * then split and look for equals compare
+	 * 
+	 * @param componentList
+	 * @return true if the component is in the string
+	 */
+	boolean filterByComponent(String componentList, String component) {
+		String[] parts = componentList.split(",");
+		for(String s : parts) {
+			if(s.toLowerCase().equals(component.toLowerCase()))
+				return true;
+		}
+		
+		return false;
 	}
 
 }
