@@ -72,6 +72,9 @@ public class Configuration {
 			} else if(a.toLowerCase().startsWith("-environment=")) {
 				environment = a.substring(13).toLowerCase();
 				System.out.println("Environment detailed : " + environment);
+			} else if(a.toLowerCase().startsWith("-mailsend=")) {
+				frameworkProperties.setProperty("mail_send", a.substring(10));
+				System.out.println("Send mail : " + a.substring(10));
 			} else if(a.toLowerCase().startsWith("-technology=")) {
 				technology = a.substring(12).toLowerCase();
 				System.out.println("Technology to look for : " + technology);

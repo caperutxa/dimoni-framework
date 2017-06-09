@@ -58,13 +58,15 @@ public class ConfigurationTest {
 	}
 	
 	@Test
-	public void fileForTestListViaParameter() throws FileNotFoundException, IOException {
-		String[] args = { "-testlistfile=This is the new test list file" };
+	public void parametersThatModifyProperties() throws FileNotFoundException, IOException {
+		String[] args = { "-testlistfile=This is the new test list file",
+				"-mailSend=true" };
 		Configuration.frameworkPropertiesFile = "src/test/resources/properties/frameworkTest.properties";
 		Configuration.defaultFrameworkConfiguration();
 		Configuration.parseParameters(args);
 		
 		Assert.assertEquals("This is the new test list file", Configuration.frameworkProperties.getProperty("test_list_file"));
+		Assert.assertEquals("true", Configuration.frameworkProperties.getProperty("mail_send"));
 	}
 	
 }
