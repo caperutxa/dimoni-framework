@@ -1,7 +1,10 @@
 package caperutxa.dimoni.framework;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.Message;
@@ -10,6 +13,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import org.apache.commons.io.FileUtils;
 
 import caperutxa.dimoni.framework.config.Configuration;
 import caperutxa.dimoni.framework.executer.TestExecution;
@@ -35,6 +40,7 @@ public class Main {
 		String mailContent = prepareResults();
 		
 		// send mail summary (only if any test arise)
+		logResults(mailContent);
 		sendMail(mailContent);
 		
 		System.out.println("End");
@@ -80,6 +86,9 @@ public class Main {
 			content.append(System.lineSeparator());
 		}
 		
+		System.out.println("Summary");
+		System.out.println(content.toString());
+		
 		return content.toString();
 	}
 	
@@ -121,6 +130,25 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Log results to file with relative path logs
+	 * @param content
+	 */
+	static void logResults(String content) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss_SSS");
+		String rightNow = dateFormat.format(new Date());
+		File target = new File("logs/testResults" + rightNow + ".log");
+		File parent = target.getParentFile();
+		try {
+			if (!parent.exists() && !parent.mkdirs()) {
+				throw new IllegalStateException("Couldn't create dir: " + parent);
+			}
+			FileUtils.write(target, content, "UTF-8");
+		} catch (IOException e) {
+			System.out.println("Unable to log the test results into file. " + e.getMessage());
+		}
 	}
 
 }
