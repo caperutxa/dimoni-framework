@@ -57,4 +57,14 @@ public class ConfigurationTest {
 		Assert.assertEquals("src/test/resources/testconfiguration/testlist.csv", Configuration.frameworkProperties.getProperty("test_list_file"));
 	}
 	
+	@Test
+	public void fileForTestListViaParameter() throws FileNotFoundException, IOException {
+		String[] args = { "-testlistfile=This is the new test list file" };
+		Configuration.frameworkPropertiesFile = "src/test/resources/properties/frameworkTest.properties";
+		Configuration.defaultFrameworkConfiguration();
+		Configuration.parseParameters(args);
+		
+		Assert.assertEquals("This is the new test list file", Configuration.frameworkProperties.getProperty("test_list_file"));
+	}
+	
 }

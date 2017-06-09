@@ -75,6 +75,9 @@ public class Configuration {
 			} else if(a.toLowerCase().startsWith("-technology=")) {
 				technology = a.substring(12).toLowerCase();
 				System.out.println("Technology to look for : " + technology);
+			} else if(a.toLowerCase().startsWith("-testlistfile=")) {
+				frameworkProperties.setProperty("test_list_file", a.substring(14));
+				System.out.println("File for test list : " + a.substring(14));
 			} else if(a.toLowerCase().startsWith("-testscenario=")) {
 				testScenario = a.substring(14).toLowerCase();
 				System.out.println("Test case to run : " + testScenario);

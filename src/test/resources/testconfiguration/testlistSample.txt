@@ -1,0 +1,8 @@
+1#TestCase1#technology#arguments#main component#secondary component 1, secondary component 2#trigger 1, trigger 2, trigger 3
+1#TestCase4#soapui#-s"Search" -c"SearchByResort" -r -foutput -PdestinationFolder=output ${soapui_projects_folder}\ReadyApi\XML-soapui-project.xml#XMLAPI##critical
+2#TestCase4#soapui#-s"Search" -c"searchByResort" -r -foutput -PdestinationFolder=output ${soapui_projects_folder}\ReadyApi\XML-soapui-project.xml#XMLAPI##critical
+7#TestCase4#soapui#case 2#api#GUI#smoke
+8#TestCase4#soapui#case 3#api#GUI,deepapi#bussines
+9#TestCase5#selenium#parameters 5#GUI##critical
+10#TestCase6#custom#custom parameters 1#deepapi##critical
+11#TestCase7#custom#custom parameters 1#deepapi##smoke
