@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,18 +83,15 @@ public class TestListManager {
 	 * @return
 	 */
 	String translateGroup(String line, String group) {
-		for(Entry<Object, Object> e : Configuration.frameworkProperties.entrySet()) {
-			if(e.getKey().equals(group)){
-				line = line.replace("${" + e.getKey() + "}", e.getValue().toString());
-				return line;
-			}
+		if(null != Configuration.frameworkProperties.getProperty(group)) {
+			line = line.replace("${" + group + "}", Configuration.frameworkProperties.getProperty(group));
+			return line;
 		}
 		
-		for(Entry<Object, Object> e : Configuration.environmentProperties.entrySet()) {
-			if(e.getKey().equals(Configuration.environment + "_" + group)){
-				line = line.replace("${" + group + "}", e.getValue().toString());
-				return line;
-			}
+		String environmentGroup = Configuration.environment + "_" + group;
+		if(null != Configuration.environmentProperties.getProperty(environmentGroup)) {
+			line = line.replace("${" + group + "}", Configuration.environmentProperties.getProperty(environmentGroup));
+			return line;
 		}
 		
 		return line;

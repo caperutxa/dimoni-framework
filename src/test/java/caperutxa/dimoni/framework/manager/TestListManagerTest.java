@@ -40,5 +40,9 @@ public class TestListManagerTest {
 		line = manager.translatePathVariables("${soapui_projects_folder} -s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${api}\\ReadyApi\\XML-soapui-project.xml");
 		Assert.assertTrue(line.contains("thisIsTheSoapProjectFolder"));
 		Assert.assertTrue(line.contains("http://api.testa.com"));
+		
+		line = manager.translatePathVariables("${do_not_translate} -s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${api}\\ReadyApi\\XML-soapui-project.xml");
+		Assert.assertTrue(line.contains("${do_not_translate}"));
+		Assert.assertTrue(line.contains("http://api.testa.com"));
 	}
 }
