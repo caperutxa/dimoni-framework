@@ -69,10 +69,11 @@ public class TestListManager {
 	public String translatePathVariables(String line) {
 		Pattern pattern = Pattern.compile("\\$\\{(.*?)\\}");
 		Matcher matcher = pattern.matcher(line);
+		
 		while (matcher.find()) {
 			line = translateGroup(line, matcher.group(1));
 		}
-
+		
 		return line;
 	}
 	
@@ -86,6 +87,13 @@ public class TestListManager {
 		for(Entry<Object, Object> e : Configuration.frameworkProperties.entrySet()) {
 			if(e.getKey().equals(group)){
 				line = line.replace("${" + e.getKey() + "}", e.getValue().toString());
+				return line;
+			}
+		}
+		
+		for(Entry<Object, Object> e : Configuration.environmentProperties.entrySet()) {
+			if(e.getKey().equals(Configuration.environment + "_" + group)){
+				line = line.replace("${" + group + "}", e.getValue().toString());
 				return line;
 			}
 		}

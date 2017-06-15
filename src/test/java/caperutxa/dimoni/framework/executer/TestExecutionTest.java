@@ -22,7 +22,7 @@ public class TestExecutionTest {
 		executer = new TestExecution();
 		Configuration.frameworkPropertiesFile = "src/test/resources/properties/frameworkTest.properties";
 		Configuration.defaultFrameworkConfiguration();
-		Configuration.frameworkProperties.setProperty("test_list_file", "c:/Temp/automation/testlistSample.txt");
+		Configuration.frameworkProperties.setProperty("test_list_file", "src/test/resources/testconfiguration/testlistSample.txt");
 		Configuration.parseParameters(args);
 		Configuration.getTestList();
 	}

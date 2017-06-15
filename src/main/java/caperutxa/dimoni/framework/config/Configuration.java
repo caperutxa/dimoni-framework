@@ -35,6 +35,9 @@ public class Configuration {
 	public static Properties frameworkProperties;
 	public static String frameworkPropertiesFile = "config/framework.properties";
 	
+	public static Properties environmentProperties;
+	public static String environmentPropertiesFile = "config/framework.properties";
+	
 	/**
 	 * To allow threading only one list and index should remain
 	 * Then use this method to access the next test to run
@@ -52,9 +55,11 @@ public class Configuration {
 	/**
 	 * -component=
 	 * -environment=
+	 * -mailsend=
+	 * -technology=
+	 * -testlistfile=
 	 * -testscenario=
 	 * -trigger=
-	 * -technology=
 	 * 
 	 * -custom= is unclear right now
 	 * 
@@ -100,6 +105,9 @@ public class Configuration {
 	public static void defaultFrameworkConfiguration() throws FileNotFoundException, IOException {
 		frameworkProperties = new Properties();
 		frameworkProperties.load(new FileInputStream(frameworkPropertiesFile));
+		
+		environmentProperties = new Properties();
+		environmentProperties.load(new FileInputStream(environmentPropertiesFile));
 	}
 	
 	/**
