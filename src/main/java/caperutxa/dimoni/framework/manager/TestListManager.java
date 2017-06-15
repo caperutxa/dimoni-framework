@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import caperutxa.dimoni.framework.config.Configuration;
 import caperutxa.dimoni.framework.model.TestModel;
@@ -65,9 +67,28 @@ public class TestListManager {
 	 * @return
 	 */
 	public String translatePathVariables(String line) {
+		Pattern pattern = Pattern.compile("\\$\\{(.*?)\\}");
+		Matcher matcher = pattern.matcher(line);
+		while (matcher.find()) {
+			line = translateGroup(line, matcher.group(1));
+		}
+
+		return line;
+	}
+	
+	/**
+	 * Translate the pattern using any properties file defined
+	 * @param line
+	 * @param group
+	 * @return
+	 */
+	String translateGroup(String line, String group) {
 		for(Entry<Object, Object> e : Configuration.frameworkProperties.entrySet()) {
-			line = line.replace("${" + e.getKey() + "}", e.getValue().toString());
-		} 
+			if(e.getKey().equals(group)){
+				line = line.replace("${" + e.getKey() + "}", e.getValue().toString());
+				return line;
+			}
+		}
 		
 		return line;
 	}
