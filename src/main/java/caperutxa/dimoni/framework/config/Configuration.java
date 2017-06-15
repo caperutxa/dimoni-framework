@@ -36,7 +36,7 @@ public class Configuration {
 	public static String frameworkPropertiesFile = "config/framework.properties";
 	
 	public static Properties environmentProperties;
-	public static String environmentPropertiesFile = "config/framework.properties";
+	public static String environmentPropertiesFile = "config/environment.properties";
 	
 	/**
 	 * To allow threading only one list and index should remain

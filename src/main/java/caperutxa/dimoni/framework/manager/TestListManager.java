@@ -94,6 +94,7 @@ public class TestListManager {
 			return line;
 		}
 		
+		System.out.println("WARNING : Line does not translated : " + line);
 		return line;
 	}
 	

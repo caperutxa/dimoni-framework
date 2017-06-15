@@ -44,5 +44,10 @@ public class TestListManagerTest {
 		line = manager.translatePathVariables("${do_not_translate} -s\"Search\" -c\"searchByResort\" -r -foutput -PdestinationFolder=output ${api}\\ReadyApi\\XML-soapui-project.xml");
 		Assert.assertTrue(line.contains("${do_not_translate}"));
 		Assert.assertTrue(line.contains("http://api.testa.com"));
+		
+		line = manager.translatePathVariables("1#Smoke internal api#soapui#-s\"Smoke\" -c\"SearchAndBook\" -r -foutput -PdestinationFolder=output -Penvironment=${databaseinstancename} -Pendpoint=${internal_api_pos} -PendpointXMLAPI=${xmlapi_postget_post_static} -PagentId=102 ${soapui_projects_folder}\\ReadyApi\\XML-InternalApiPos-soapui-project.xml#InternalApiPos#XMLAPI,provisional#critical,transfer");
+		Assert.assertTrue(line.contains("internalurl"));
+		Assert.assertTrue(line.contains("thisisstatic"));
+		Assert.assertTrue(line.contains("develop_a"));
 	}
 }
