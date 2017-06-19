@@ -70,10 +70,10 @@ public class Configuration {
 		for(String a : args) {
 			if(a.toLowerCase().startsWith("-component=")) {
 				component = a.substring(11).toLowerCase();
-				System.out.println("Component deteted : " + component);
+				System.out.println("Component detected : " + component);
 			} else if(a.toLowerCase().startsWith("-custom=")) {
 				custom = a.substring(8).toLowerCase();
-				System.out.println("Custom test deteted : " + custom);
+				System.out.println("Custom test detected : " + custom);
 			} else if(a.toLowerCase().startsWith("-environment=")) {
 				environment = a.substring(13).toLowerCase();
 				System.out.println("Environment detailed : " + environment);

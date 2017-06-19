@@ -36,7 +36,9 @@ public class TestListManager {
 					testList.put(t.getId(), t);
 				}
 			} catch(Exception e) {
-				System.out.println("Error while parsing test line from file : " + l + "    . Error message : " + e.getMessage());
+				System.out.println("Error while parsing test line from file : " + l);
+				System.out.println("Error message : " + e.getMessage());
+				System.out.println(e.toString());
 			}
 		}
 		

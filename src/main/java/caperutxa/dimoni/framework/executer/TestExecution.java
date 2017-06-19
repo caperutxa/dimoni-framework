@@ -31,12 +31,22 @@ public class TestExecution {
 						.append(test.getParameters());
 				System.out.println("Prepare command = " + command.toString());
 				
+				//ProcessBuilder pb = new ProcessBuilder(command.toString());
+				//pb.redirectErrorStream(true);
 				Process pr = runtime.exec(command.toString());
+				//Process pr = pb.start();
 				BufferedReader reader = new BufferedReader( new InputStreamReader(pr.getInputStream()) );
-				String line;
-				while((line = reader.readLine()) != null) 
+				BufferedReader errorReader = new BufferedReader( new InputStreamReader(pr.getErrorStream()) );
+				String line, errorLine;
+				while(
+						(line = reader.readLine()) != null
+						&& (errorLine = errorReader.readLine()) != null
+						) 
                 { 
-                    System.out.println(line);
+                    if(null != line)
+                    	System.out.println(line);
+                    if(null != errorLine)
+                    	System.out.println(errorLine);
                 }
 				
 				int exitVal = pr.waitFor();
