@@ -31,22 +31,27 @@ public class TestExecution {
 						.append(test.getParameters());
 				System.out.println("Prepare command = " + command.toString());
 				
-				//ProcessBuilder pb = new ProcessBuilder(command.toString());
-				//pb.redirectErrorStream(true);
 				Process pr = runtime.exec(command.toString());
-				//Process pr = pb.start();
+				
+				Thread errorThread = new Thread(() -> {
+					try (BufferedReader errorReader = new BufferedReader( new InputStreamReader(pr.getErrorStream()))) {
+						String errorLine;
+						while((errorLine = errorReader.readLine()) != null) 
+		                { 
+	                    	System.out.println(errorLine);
+		                }
+					} catch(Exception er) {
+						System.out.println("Error arise in errorThread");
+						System.out.println(er.toString());
+					}
+				});
+				errorThread.start();
+				
 				BufferedReader reader = new BufferedReader( new InputStreamReader(pr.getInputStream()) );
-				BufferedReader errorReader = new BufferedReader( new InputStreamReader(pr.getErrorStream()) );
-				String line, errorLine;
-				while(
-						(line = reader.readLine()) != null
-						&& (errorLine = errorReader.readLine()) != null
-						) 
+				String line;
+				while((line = reader.readLine()) != null) 
                 { 
-                    if(null != line)
-                    	System.out.println(line);
-                    if(null != errorLine)
-                    	System.out.println(errorLine);
+                	System.out.println(line);
                 }
 				
 				int exitVal = pr.waitFor();
@@ -67,10 +72,9 @@ public class TestExecution {
 						.append(", trigger=").append(test.getTrigger());
 				System.out.println(errorMessage);
 				System.out.println(e.getMessage());
-				//e.printStackTrace();
 				
 				test.setResult(false);
-				test.setFailedError(e.getMessage());
+				test.setFailedError(e.toString());
 			}
 			
 			test.setEnd(new Date());
