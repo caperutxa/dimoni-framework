@@ -24,15 +24,20 @@ public class TestListManager {
 			try {
 				String translated = translatePathVariables(l);
 				String[] parts = translated.split("#");
-				String componentList = parts[4] + "," + parts[5];
+				StringBuilder builder = new StringBuilder(parts[4]);
+				if(5 < parts.length)
+					builder.append(",").append(parts[5]);
+				if(6 < parts.length)
+					builder.append(",").append(parts[6]);
+				String componentList = builder.toString();
+				
 				if(filterByComponent(componentList, component)) {
 					TestModel t = new TestModel();
 					t.setId(Integer.parseInt(parts[0]));
 					t.setTestCase(parts[1]);
 					t.setTechnology(parts[2]);
 					t.setParameters(parts[3]);
-					t.setComponents(parts[4] + "," + parts[5]);
-					t.setTrigger(parts[6]);
+					t.setComponents(componentList);
 					testList.put(t.getId(), t);
 				}
 			} catch(Exception e) {

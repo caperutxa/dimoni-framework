@@ -68,8 +68,7 @@ public class TestExecution {
 						.append(" , test case=").append(test.getTestCase())
 						.append(" , technology=").append(test.getTechnology())
 						.append(" , parameters=[").append(test.getParameters())
-						.append("] , components=").append(test.getComponents())
-						.append(", trigger=").append(test.getTrigger());
+						.append("] , components=").append(test.getComponents());
 				System.out.println(errorMessage);
 				System.out.println(e.getMessage());
 				

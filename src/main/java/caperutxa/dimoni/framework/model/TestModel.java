@@ -15,7 +15,6 @@ public class TestModel {
 	String technology;
 	String parameters;
 	String components;
-	String trigger;
 	
 	public int getId() {
 		return id;
@@ -80,15 +79,7 @@ public class TestModel {
 	public void setComponents(String components) {
 		this.components = components;
 	}
-
-	public String getTrigger() {
-		return trigger;
-	}
-
-	public void setTrigger(String trigger) {
-		this.trigger = trigger;
-	}
-
+	
 	public String getErrorMessage() {
 		return errorMessage;
 	}
