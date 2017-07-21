@@ -114,6 +114,9 @@ public class TestListManager {
 	 * @return true if the component is in the string
 	 */
 	boolean filterByComponent(String componentList, String component) {
+		if(component.toLowerCase().equals("all"))
+			return true;
+		
 		String[] parts = componentList.split(",");
 		for(String s : parts) {
 			if(s.toLowerCase().equals(component.toLowerCase()))

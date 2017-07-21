@@ -24,8 +24,6 @@ public class TestExecution {
 			test.setStart(new Date());
 			
 			try {
-				
-				System.out.println("Run by console = " + Configuration.frameworkProperties.getProperty(test.getTechnology()));
 				System.out.println("Test = " + test.getId() + " - " + test.getTestCase());
 				StringBuilder command = new StringBuilder().append(Configuration.frameworkProperties.getProperty(test.getTechnology())).append(" ")
 						.append(test.getParameters());
