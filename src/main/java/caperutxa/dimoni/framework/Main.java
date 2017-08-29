@@ -115,8 +115,11 @@ public class Main {
 		
 		try {
 			MimeMessage message = new MimeMessage(session);
-			
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+			String[] recipients = to.split(",");
+			for(String sendTo : recipients) {
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
+			}
 			message.setSubject("Test results");
 			message.setText(content);
 			message.setFrom(new InternetAddress(from));
