@@ -22,8 +22,7 @@ public class TestListManager {
 		
 		for(String l : lines) {
 			try {
-				String translated = translatePathVariables(l);
-				String[] parts = translated.split("#");
+				String[] parts = l.split("#");
 				StringBuilder builder = new StringBuilder(parts[4]);
 				if(5 < parts.length)
 					builder.append(",").append(parts[5]);
@@ -32,11 +31,14 @@ public class TestListManager {
 				String componentList = builder.toString();
 				
 				if(filterByComponent(componentList, component)) {
+					String translated = translatePathVariables(l);
+					String[] partsTranslated = translated.split("#");
+
 					TestModel t = new TestModel();
-					t.setId(Integer.parseInt(parts[0]));
-					t.setTestCase(parts[1]);
-					t.setTechnology(parts[2]);
-					t.setParameters(parts[3]);
+					t.setId(Integer.parseInt(partsTranslated[0]));
+					t.setTestCase(partsTranslated[1]);
+					t.setTechnology(partsTranslated[2]);
+					t.setParameters(partsTranslated[3]);
 					t.setComponents(componentList);
 					testList.put(t.getId(), t);
 				}
@@ -69,7 +71,7 @@ public class TestListManager {
 	 * 
 	 * This is because no one needs to place the projects in the same folder
 	 * 
-	 * @param parameter
+	 * @param line
 	 * @return
 	 */
 	public String translatePathVariables(String line) {
