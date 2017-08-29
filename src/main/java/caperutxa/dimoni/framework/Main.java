@@ -14,6 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import caperutxa.dimoni.framework.executer.TestReport;
 import org.apache.commons.io.FileUtils;
 
 import caperutxa.dimoni.framework.config.Configuration;
@@ -50,44 +51,8 @@ public class Main {
 	 * @return
 	 */
 	static String prepareResults() {
-		StringBuilder content = new StringBuilder();
-		List<TestModel> list = Configuration.getListOfTests();
-		
-		for(TestModel m : list) {
-			System.out.println("Preparing results for test id = " + m.getId());
-			
-			content.append(System.lineSeparator());
-			
-			content.append("Test ").append(m.getId())
-					.append(", components=[").append(m.getComponents())
-					.append("], Test case ").append(m.getTechnology())
-					.append(", ").append(m.getTechnology())
-					.append(", parameters [ ").append(m.getParameters()).append(" ]");
-			
-			content.append(System.lineSeparator());
-			
-			content.append("Start at ").append(m.getStart())
-				.append(" , end at").append(m.getEnd());
-			
-			content.append(System.lineSeparator());
-			
-			content.append("Result : ").append(m.isResult());
-			
-			if(null != m.getErrorMessage()) {
-				content.append(System.lineSeparator()).append(m.getErrorMessage());
-			}
-			
-			if(null != m.getFailedError()) {
-				content.append(System.lineSeparator()).append(m.getFailedError());
-			}
-			
-			content.append(System.lineSeparator());
-		}
-		
-		System.out.println("Summary");
-		System.out.println(content.toString());
-		
-		return content.toString();
+		TestReport report = new TestReport();
+		return report.prepareTestResults(Configuration.getListOfTests());
 	}
 	
 	/**
@@ -121,7 +86,7 @@ public class Main {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 			}
 			message.setSubject("Test results");
-			message.setText(content);
+			message.setContent(content, "text/html");
 			message.setFrom(new InternetAddress(from));
 			
 			Transport.send(message);
