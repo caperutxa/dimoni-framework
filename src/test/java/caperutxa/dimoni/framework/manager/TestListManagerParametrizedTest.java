@@ -45,19 +45,19 @@ public class TestListManagerParametrizedTest {
            });
     }
     
-    @Test
-	public void getTestListFromFileTest() {	
+	@Test
+	public void getTestListFromFileTest() {
 		boolean found = false;
 		File file = new File(testFile);
-		
+
 		Map<Integer, TestModel> testList = manager.getTestByComponentFromFile(file.getAbsolutePath(), expectedComponent);
-		
+
 		for(Map.Entry<Integer, TestModel> m : testList.entrySet()) {
 			Assert.assertTrue(m.getValue().getComponents().contains(expectedComponent));
 			Assert.assertTrue(!m.getValue().getComponents().contains(expectedComponent+"s"));
 			found = true;
 		}
 		Assert.assertTrue(found); // At least one result
-    }
+	}
 
 }

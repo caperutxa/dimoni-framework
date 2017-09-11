@@ -1,8 +1,11 @@
 package caperutxa.dimoni.framework.manager;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 
+import caperutxa.dimoni.framework.model.TestModel;
 import org.junit.Test;
 
 import caperutxa.dimoni.framework.config.Configuration;
@@ -49,5 +52,41 @@ public class TestListManagerTest {
 		Assert.assertTrue(line.contains("internalurl"));
 		Assert.assertTrue(line.contains("thisisstatic"));
 		Assert.assertTrue(line.contains("develop_a"));
+	}
+
+	@Test
+	public void getTestByIdFromFileTest() {
+		manager = new TestListManager();
+
+		File file = new File(testFile);
+		int id = 1;
+		Map<Integer, TestModel> testList = manager.getTestByIdFromFile(file.getAbsolutePath(), id);
+
+		int counter = 0;
+		for(Map.Entry<Integer, TestModel> m : testList.entrySet()) {
+			Assert.assertTrue(id == m.getValue().getId());
+			counter++;
+		}
+		Assert.assertTrue(1 == counter); // At Only one result
+
+		id = 10;
+		testList = manager.getTestByIdFromFile(file.getAbsolutePath(), id);
+
+		counter = 0;
+		for(Map.Entry<Integer, TestModel> m : testList.entrySet()) {
+			Assert.assertTrue(id == m.getValue().getId());
+			counter++;
+		}
+		Assert.assertTrue(1 == counter); // At Only one result
+
+		id = 999;
+		testList = manager.getTestByIdFromFile(file.getAbsolutePath(), id);
+
+		counter = 0;
+		for(Map.Entry<Integer, TestModel> m : testList.entrySet()) {
+			Assert.assertTrue(id == m.getValue().getId());
+			counter++;
+		}
+		Assert.assertTrue(0 == counter); // At Only one result
 	}
 }

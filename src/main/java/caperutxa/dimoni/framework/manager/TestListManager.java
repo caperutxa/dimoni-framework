@@ -15,7 +15,14 @@ import caperutxa.dimoni.framework.config.Configuration;
 import caperutxa.dimoni.framework.model.TestModel;
 
 public class TestListManager {
-	
+
+	/**
+	 * Extract the tests that match the component
+	 *
+	 * @param path
+	 * @param component
+	 * @return
+	 */
 	public Map<Integer, TestModel> getTestByComponentFromFile(String path, String component) {
 		Map<Integer, TestModel> testList= new LinkedHashMap<Integer, TestModel>();
 		List<String> lines = getTestFromFile(path);
@@ -31,15 +38,7 @@ public class TestListManager {
 				String componentList = builder.toString();
 				
 				if(filterByComponent(componentList, component)) {
-					String translated = translatePathVariables(l);
-					String[] partsTranslated = translated.split("#");
-
-					TestModel t = new TestModel();
-					t.setId(Integer.parseInt(partsTranslated[0]));
-					t.setTestCase(partsTranslated[1]);
-					t.setTechnology(partsTranslated[2]);
-					t.setParameters(partsTranslated[3]);
-					t.setComponents(componentList);
+					TestModel t = translateAndGetTestModel(l);
 					testList.put(t.getId(), t);
 				}
 			} catch(Exception e) {
@@ -51,6 +50,60 @@ public class TestListManager {
 		
 		return testList;
 	}
+
+	/**
+	 * Extract test with a given id
+	 *
+	 * @param path
+	 * @param id of the test that is desired to run
+	 * @return
+	 */
+	public Map<Integer, TestModel> getTestByIdFromFile(String path, int id) {
+		Map<Integer, TestModel> testList= new LinkedHashMap<Integer, TestModel>();
+		List<String> lines = getTestFromFile(path);
+
+		for(String l : lines) {
+			try {
+				String[] parts = l.split("#");
+				int listId = Integer.parseInt(parts[0]);
+
+				if(listId == id) {
+					TestModel t = translateAndGetTestModel(l);
+					testList.put(t.getId(), t);
+				}
+			} catch(Exception e) {
+				System.out.println("Error while parsing test line from file : " + l);
+				System.out.println("Error message : " + e.getMessage());
+				System.out.println(e.toString());
+			}
+		}
+
+		return testList;
+	}
+
+	TestModel translateAndGetTestModel(String line) {
+		TestModel t = new TestModel();
+
+		String translated = translatePathVariables(line);
+		String[] partsTranslated = translated.split("#");
+
+		StringBuilder builder = new StringBuilder(partsTranslated[4]);
+		if(5 < partsTranslated.length)
+			builder.append(",").append(partsTranslated[5]);
+		if(6 < partsTranslated.length)
+			builder.append(",").append(partsTranslated[6]);
+		String componentList = builder.toString();
+
+		t.setId(Integer.parseInt(partsTranslated[0]));
+		t.setTestCase(partsTranslated[1]);
+		t.setTechnology(partsTranslated[2]);
+		t.setParameters(partsTranslated[3]);
+		t.setComponents(componentList);
+
+		return t;
+	}
+
+
 	
 	List<String> getTestFromFile(String path) {
 		List<String> list = new LinkedList<String>();

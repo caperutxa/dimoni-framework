@@ -22,6 +22,7 @@ public class Configuration {
 
 	public static String component;
 	public static String environment;
+	public static int testId;
 	public static String testScenario;
 	public static String trigger;
 	public static String technology;
@@ -58,8 +59,8 @@ public class Configuration {
 	 * -mailsend=
 	 * -technology=
 	 * -testlistfile=
-	 * -testscenario=
-	 * -trigger=
+	 * -testscenario= [deprecated]
+	 * -trigger= [deprecated]
 	 * 
 	 * -custom= is unclear right now
 	 * 
@@ -77,6 +78,9 @@ public class Configuration {
 			} else if(a.toLowerCase().startsWith("-environment=")) {
 				environment = a.substring(13).toLowerCase();
 				System.out.println("Environment detailed : " + environment);
+			} else if(a.toLowerCase().startsWith("-id=")) {
+				testId = Integer.parseInt(a.substring(4));
+				System.out.println("Test id detected : " + testId);
 			} else if(a.toLowerCase().startsWith("-mailsend=")) {
 				frameworkProperties.setProperty("mail_send", a.substring(10));
 				System.out.println("Send mail : " + a.substring(10));
@@ -120,7 +124,11 @@ public class Configuration {
 	public static void getTestList() {
 		testMap = new LinkedHashMap<Integer, TestModel>();
 		TestListManager manager = new TestListManager();
-		
+
+		if(0 != testId) {
+			combineTestLists(manager.getTestByIdFromFile(frameworkProperties.getProperty("test_list_file"), testId));
+		}
+
 		if(null != component) {
 			combineTestLists(manager.getTestByComponentFromFile(frameworkProperties.getProperty("test_list_file"), component));
 		}
