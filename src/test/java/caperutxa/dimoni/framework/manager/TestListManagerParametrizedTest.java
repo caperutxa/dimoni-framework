@@ -38,7 +38,7 @@ public class TestListManagerParametrizedTest {
 		manager = new TestListManager();
 	}
 	
-	@Parameters(name = "{index}: component = '{0}'")
+	@Parameters(name = "{index}: component = {0}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {     
                  { "GUI" }, { "api" }, { "deepapi" }

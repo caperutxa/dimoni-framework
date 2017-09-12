@@ -19,6 +19,9 @@ public class TestListManager {
 	/**
 	 * Extract the tests that match the component
 	 *
+	 * The component could be a list of components,
+	 * then once is detected break the loop
+	 *
 	 * @param path
 	 * @param component
 	 * @return
@@ -36,10 +39,14 @@ public class TestListManager {
 				if(6 < parts.length)
 					builder.append(",").append(parts[6]);
 				String componentList = builder.toString();
-				
-				if(filterByComponent(componentList, component)) {
-					TestModel t = translateAndGetTestModel(l);
-					testList.put(t.getId(), t);
+
+				String[] componentSplit = component.split(",");
+				for(String splitted : componentSplit) {
+					if (filterByComponent(componentList, splitted.trim())) {
+						TestModel t = translateAndGetTestModel(l);
+						testList.put(t.getId(), t);
+						break;
+					}
 				}
 			} catch(Exception e) {
 				System.out.println("Error while parsing test line from file : " + l);
@@ -174,7 +181,7 @@ public class TestListManager {
 		
 		String[] parts = componentList.split(",");
 		for(String s : parts) {
-			if(s.toLowerCase().equals(component.toLowerCase()))
+			if(s.trim().toLowerCase().equals(component.toLowerCase()))
 				return true;
 		}
 		
