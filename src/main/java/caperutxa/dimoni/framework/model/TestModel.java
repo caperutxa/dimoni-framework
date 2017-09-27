@@ -1,9 +1,11 @@
 package caperutxa.dimoni.framework.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestModel {
-	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
 	Date start;
 	Date end;
 	boolean result;
@@ -15,6 +17,20 @@ public class TestModel {
 	String technology;
 	String parameters;
 	String components;
+
+	public String getMainComponent() {
+		return components.split(",")[0];
+	}
+
+	public String getStartDateWithFormat() {
+		return sdf.format(start);
+	}
+
+	public String getEndDateWithFormat() {
+		return sdf.format(end);
+	}
+
+	/* * Getters and setter * */
 	
 	public int getId() {
 		return id;

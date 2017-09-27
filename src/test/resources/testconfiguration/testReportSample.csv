@@ -1,0 +1,18 @@
+1#TestCase1#technology#arguments#main_component#secondary_component_1, secondary_component_2,trigger_1, trigger_2, trigger_3
+2#TestCase2#technology#arguments#main_component,secondary_component_1, secondary_component_2,trigger_1, trigger_2, trigger_3
+3#TestCase3#technology#arguments#main_component#secondary_component_1, secondary_component_2,trigger_1, trigger_2, trigger_3,smoke
+4#TestCase4#soapui#-s"Search" -c"SearchByResort" -r -foutput -PdestinationFolder=output XML-soapui-project.xml#XMLAPI,critical
+5#TestCase5#soapui#-s"Search" -c"searchByResort" -r -foutput -PdestinationFolder=output XML-soapui-project.xml#XMLAPI,critical
+6#TestCase6#soapui#-s"Search" -c"searchByResort" -r -foutput -PdestinationFolder=output XML-soapui-project.xml#XMLAPI,critical,smoke
+7#TestCase7#soapui#case 2#api#GUI#smoke
+8#TestCase8#soapui#case 2#api,GUI,smoke
+9#TestCase9#soapui#case 2#api#GUI,smoke
+10#TestCase10#selenium#case 3#api#GUI,deepapi#bussines
+11#TestCase11#selenium#parameters 5#GUI,critical
+12#TestCase11#selenium#parameters 5#GUI,critical
+13#TestCase6#custom#custom parameters 1#deepapi,critical
+14#TestCase6#custom#custom parameters 1#deepapi,critical
+15#TestCase6#custom#custom parameters 1#deepapi,critical
+16#TestCase7#custom#custom parameters 1#deepapi,smoke
+17#TestCase7#custom#custom parameters 1#deepapi,smoke
+18#TestCase7#custom#custom parameters 1#deepapi,smoke
