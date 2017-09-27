@@ -3,16 +3,19 @@ package caperutxa.dimoni.framework;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import caperutxa.dimoni.framework.executer.TestReport;
 import org.apache.commons.io.FileUtils;
@@ -61,6 +64,10 @@ public class Main {
 	 * @param content
 	 */
 	static void sendMail(String content) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
+		String fileName = "logs/summary_" + sdf.format(new Date());
+		writeDownSummaryToFile(content, fileName);
+
 		if(!Configuration.frameworkProperties.getProperty("mail_send").equals("true"))
 			return;
 		
@@ -86,9 +93,21 @@ public class Main {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 			}
 			message.setSubject("Test results");
-			message.setContent(content, "text/html");
+			//message.setContent(content, "text/html");
 			message.setFrom(new InternetAddress(from));
-			
+
+			Multipart multi = new MimeMultipart();
+			MimeBodyPart body = new MimeBodyPart();
+			body.setContent(content, "text/html");
+			multi.addBodyPart(body);
+			MimeBodyPart attach = new MimeBodyPart();
+			DataSource source = new FileDataSource(fileName);
+			attach.setDataHandler(new DataHandler(source));
+			attach.setFileName("TestSummary.html");
+			multi.addBodyPart(attach);
+
+			message.setContent(multi);
+
 			Transport.send(message);
 	        System.out.println("Message sent successfully");
 		} catch (MessagingException e) {
@@ -96,6 +115,18 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+	}
+
+	static void writeDownSummaryToFile(String out, String outputFile) {
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter( outputFile );
+			pw.println(out);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			pw.close();
+		}
 	}
 	
 	/**
