@@ -39,8 +39,10 @@ public class TestReportTest {
 		Configuration.getTestList();
 		setSuccessOrFailAtRandom(Configuration.getListOfTests());
 		String out = report.prepareTestResults(Configuration.getListOfTests());
+		String contentOut = report.createContentMail();
 
 		writeDownToFile(out, "logs/testReport2.html");
+		writeDownToFile(contentOut, "logs/testContentReport2.html");
 
 		// Nothing to validate
 	}

@@ -39,23 +39,14 @@ public class Main {
 		runner.runTest();
 		
 		// get results
-		String mailContent = prepareResults();
+		TestReport report = new TestReport();
+		report.prepareResultsForLogAndMail(Configuration.getListOfTests());
 		
 		// send mail summary (only if any test arise)
-		logResults(mailContent);
-		sendMail(mailContent);
+		logResults(report.getMailAttached());
+		sendMail(report.getMailContent(), report.getMailAttached());
 		
 		System.out.println("End");
-	}
-	
-	/**
-	 * Get test list and prepare a mail
-	 * 
-	 * @return
-	 */
-	static String prepareResults() {
-		TestReport report = new TestReport();
-		return report.prepareTestResults(Configuration.getListOfTests());
 	}
 	
 	/**
@@ -63,10 +54,10 @@ public class Main {
 	 * 
 	 * @param content
 	 */
-	static void sendMail(String content) {
+	static void sendMail(String content, String fileAttached) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
 		String fileName = "logs/summary_" + sdf.format(new Date());
-		writeDownSummaryToFile(content, fileName);
+		writeDownSummaryToFile(fileAttached, fileName);
 
 		if(!Configuration.frameworkProperties.getProperty("mail_send").equals("true"))
 			return;
@@ -93,7 +84,6 @@ public class Main {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 			}
 			message.setSubject("Test results");
-			//message.setContent(content, "text/html");
 			message.setFrom(new InternetAddress(from));
 
 			Multipart multi = new MimeMultipart();

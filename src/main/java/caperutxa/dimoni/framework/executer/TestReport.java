@@ -3,6 +3,7 @@ package caperutxa.dimoni.framework.executer;
 import caperutxa.dimoni.framework.model.TestModel;
 import caperutxa.dimoni.framework.model.TestSummary;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,18 @@ public class TestReport {
 
 	Date startTest;
 	Date endTest;
+
+	String mailContent;
+	String mailAttached;
+	DecimalFormat decimalRound;
+
+	Map<String,TestSummary> summary = new LinkedHashMap<String, TestSummary>();
+	Map<String,TestSummary> summaryByComponent = new LinkedHashMap<String, TestSummary>();
+
+	public void prepareResultsForLogAndMail(List<TestModel> list) {
+		mailAttached = prepareTestResults(list);
+		mailContent = createContentMail();
+	}
 	/**
 	 * The reporting consist into
 	 * 1 - Summary
@@ -19,11 +32,10 @@ public class TestReport {
 	 *
 	 * @param list
 	 * @return
+	 *
 	 */
 	public String prepareTestResults(List<TestModel> list) {
 		StringBuilder content = new StringBuilder();
-		Map<String,TestSummary> summary = new LinkedHashMap<String, TestSummary>();
-		Map<String,TestSummary> summaryByComponent = new LinkedHashMap<String, TestSummary>();
 		summary.put("total", new TestSummary("total"));
 
 		System.out.println("Prepare test results");
@@ -54,6 +66,10 @@ public class TestReport {
 		return resultContent.toString();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	StringBuilder getHeader() {
 		StringBuilder s = new StringBuilder()
 				.append("<html><head>\n")
@@ -107,7 +123,6 @@ public class TestReport {
 
 		summaryTable.append("<canvas id=\"").append(id).append("\"></canvas>");
 
-		//summaryTable.append("<h1>Test summary</h1><table><tr><td>Technology</td><td>total</td><td>Success</td><td>Failed</td><td>Success / Failed</td></tr>");
 		StringBuilder labels = new StringBuilder();
 		StringBuilder successData = new StringBuilder();
 		StringBuilder failedData = new StringBuilder();
@@ -126,7 +141,7 @@ public class TestReport {
 				backgroundBorderSuccess.append(",");
 				backgroundBorderFailed.append(",");
 			}
-			//summaryTable.append(addSummaryToTable(entry.getValue()));
+
 			labels.append("\"").append(entry.getValue().getType()).append("\"");
 			successData.append(entry.getValue().getSuccess());
 			failedData.append(entry.getValue().getFailed());
@@ -137,7 +152,6 @@ public class TestReport {
 
 			counter++;
 		}
-		//summaryTable.append("</table>");
 
 		summaryTable.append("<script>");
 
@@ -202,24 +216,72 @@ public class TestReport {
 	}
 
 	/**
+	 * The mail content is a short summary of the full results in html
+	 *
+	 * @return
+	 */
+	public String createContentMail() {
+		decimalRound = new DecimalFormat();
+		decimalRound.setMaximumFractionDigits(2);
+
+		StringBuilder content = new StringBuilder()
+				.append("<html><head>")
+				.append("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">")
+				.append("</head><body>")
+				.append("<h1>Test summary</h1>")
+				.append("<p>Start : ").append(startTest).append("</p>")
+				.append("<p>End : ").append(endTest).append("</p>");
+
+		content.append("<table class=\"table table-hover table-condensed\">")
+				.append("<tr><td></td><td class=\"text-center\">Results</td><td class=\"text-center\">% success</td><td class=\"text-center\">% failed</td></tr>");
+
+		for(Map.Entry<String, TestSummary> entry : summaryByComponent.entrySet()) {
+			content.append(addSummaryToTable(entry.getValue()));
+		}
+
+		content.append("<tr></tr>");
+
+		for(Map.Entry<String, TestSummary> entry : summary.entrySet()) {
+			content.append(addSummaryToTable(entry.getValue()));
+		}
+
+		content.append("</table>");
+
+		content.append("</body></html>");
+
+		return content.toString();
+	}
+
+	/**
 	 * summaryTable.append("<table><tr><td>Technology</td><td>total</td><td>Success</td><td>Failed</td><td>Success / Failed</td></tr>");
 	 *
 	 * @param s
 	 * @return
 	 */
 	String addSummaryToTable(TestSummary s) {
-		StringBuilder summary = new StringBuilder()
-				.append("<tr><td>")
+		StringBuilder summary = new StringBuilder();
+
+		if("total".equals(s.getType())) {
+			summary.append("<tr style=\"background-color:#f5f5f5\">");
+		} else {
+			summary.append("<tr>");
+		}
+
+		summary.append("<td class=\"text-right\">")
 				.append(s.getType())
-				.append("</td><td>")
+				.append("</td><td class=\"text-center\">")
 				.append(s.getTotalTest())
-				.append("</td><td>")
-				.append(s.getSuccessPercentage()).append(" %")
-				.append("</td><td>")
-				.append(s.getFailedPercentage()).append(" %")
-				.append("</td><td>")
-				.append(s.getSuccess()).append(" / ").append(s.getFailed())
-				.append("</td></tr>");
+				.append(" <small class=\"text-muted\">(")
+				.append("<i class=\"text-success\">").append(s.getSuccess()).append("</i>/<i class=\"text-danger\">").append(s.getFailed()).append("</i>")
+				.append(")</small>")
+				.append("</td><td class=\"text-center\">")
+				.append(decimalRound.format(s.getSuccessPercentage())).append(" %")
+				.append("</td><td class=\"text-center\">")
+				.append(decimalRound.format(s.getFailedPercentage())).append(" %")
+				.append("</td><td class=\"text-center\">")
+				.append("</td>");
+
+		summary.append("<tr>");
 
 		return summary.toString();
 	}
@@ -269,4 +331,21 @@ public class TestReport {
 		return content.toString();
 	}
 
+	/* * Getters and setters * */
+
+	public String getMailContent() {
+		return mailContent;
+	}
+
+	public void setMailContent(String mailConent) {
+		this.mailContent = mailConent;
+	}
+
+	public String getMailAttached() {
+		return mailAttached;
+	}
+
+	public void setMailAttached(String mailAttached) {
+		this.mailAttached = mailAttached;
+	}
 }
