@@ -31,6 +31,7 @@ public class Configuration {
 	
 	static int currentTestIndex = 0;
 	static List<TestModel> listOfTests;
+	public static String componentsApplied;
 	public static Map<Integer, TestModel> testMap;
 	
 	public static Properties frameworkProperties;
@@ -126,10 +127,12 @@ public class Configuration {
 		TestListManager manager = new TestListManager();
 
 		if(0 != testId) {
+			componentsApplied = "Id " + testId;
 			combineTestLists(manager.getTestByIdFromFile(frameworkProperties.getProperty("test_list_file"), testId));
 		}
 
 		if(null != component) {
+			componentsApplied = "Suites : " + component;
 			combineTestLists(manager.getTestByComponentFromFile(frameworkProperties.getProperty("test_list_file"), component));
 		}
 		

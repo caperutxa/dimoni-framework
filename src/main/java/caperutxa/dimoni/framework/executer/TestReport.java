@@ -14,6 +14,7 @@ public class TestReport {
 	Date startTest;
 	Date endTest;
 
+	String mailSubject;
 	String mailContent;
 	String mailAttached;
 	DecimalFormat decimalRound;
@@ -21,10 +22,29 @@ public class TestReport {
 	Map<String,TestSummary> summary = new LinkedHashMap<String, TestSummary>();
 	Map<String,TestSummary> summaryByComponent = new LinkedHashMap<String, TestSummary>();
 
-	public void prepareResultsForLogAndMail(List<TestModel> list) {
-		mailAttached = prepareTestResults(list);
-		mailContent = createContentMail();
+	/**
+	 *
+	 * @param list
+	 */
+	public void prepareResultsForLogAndMail(String components, List<TestModel> list) {
+		mailAttached = prepareTestResults(components, list);
+		mailContent = createContentMail(components);
+		mailSubject = getMailSubject(components);
 	}
+
+	/**
+	 *
+	 * @param components
+	 * @return
+	 */
+	String getMailSubject(String components) {
+		StringBuilder s = new StringBuilder()
+				.append("Test Results. ")
+				.append(components);
+
+		return s.toString();
+	}
+
 	/**
 	 * The reporting consist into
 	 * 1 - Summary
@@ -34,7 +54,7 @@ public class TestReport {
 	 * @return
 	 *
 	 */
-	public String prepareTestResults(List<TestModel> list) {
+	public String prepareTestResults(String components, List<TestModel> list) {
 		StringBuilder content = new StringBuilder();
 		summary.put("total", new TestSummary("total"));
 
@@ -49,7 +69,7 @@ public class TestReport {
 		content.append("</table>");
 
 		System.out.println("Prepare summary");
-		StringBuilder summaryHeader = prepareTheSummaryHeader();
+		StringBuilder summaryHeader = prepareTheSummaryHeader(components);
 		StringBuilder summaryTableByComponent = prepareTheSummary(summaryByComponent, "summaryByComponent");
 		StringBuilder summaryTable = prepareTheSummary(summary, "summaryByTechnology");
 
@@ -98,13 +118,14 @@ public class TestReport {
 	 *
 	 * @return
 	 */
-	StringBuilder prepareTheSummaryHeader() {
+	StringBuilder prepareTheSummaryHeader(String components) {
 		StringBuilder s = new StringBuilder()
 				.append("<div class=\"row\"><div class=\"col-md-12\" style=\"margin-bottom:15px\"></div></div>")
 				.append("<div class=\"row\">")
 				.append("<div class=\"col-md-12\">")
 				.append("<div class=\"jumbotron\">")
 				.append("<p class=\"h1\">Test summary</p>")
+				.append("<p class=\"h3\">").append(components).append("</p>")
 				.append("<p><span class=\"text-muted small\">Start at ").append(startTest).append("</span></p>")
 				.append("<p><span class=\"text-muted small\">Ends at ").append(endTest).append("</span></p>")
 				.append("</div></div></div>");
@@ -220,7 +241,7 @@ public class TestReport {
 	 *
 	 * @return
 	 */
-	public String createContentMail() {
+	public String createContentMail(String components) {
 		decimalRound = new DecimalFormat();
 		decimalRound.setMaximumFractionDigits(2);
 
@@ -228,7 +249,7 @@ public class TestReport {
 				.append("<html><head>")
 				.append("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">")
 				.append("</head><body>")
-				.append("<h1>Test summary</h1>")
+				.append("<h1>Test summary <small class=\"text-muted\">").append(components).append("</small></h1>")
 				.append("<p>Start : ").append(startTest).append("</p>")
 				.append("<p>End : ").append(endTest).append("</p>");
 
@@ -347,5 +368,13 @@ public class TestReport {
 
 	public void setMailAttached(String mailAttached) {
 		this.mailAttached = mailAttached;
+	}
+
+	public String getMailSubject() {
+		return mailSubject;
+	}
+
+	public void setMailSubject(String mailSubject) {
+		this.mailSubject = mailSubject;
 	}
 }

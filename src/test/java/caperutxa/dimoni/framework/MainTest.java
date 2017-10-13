@@ -34,9 +34,9 @@ public class MainTest {
 		Configuration.component = "all";
 		Configuration.getTestList();
 		setSuccessOrFailAtRandom(Configuration.getListOfTests());
-		report.prepareResultsForLogAndMail(Configuration.getListOfTests());
+		report.prepareResultsForLogAndMail(Configuration.componentsApplied, Configuration.getListOfTests());
 
-		Main.sendMail(report.getMailContent(), report.getMailAttached());
+		Main.sendMail(report);
 	}
 	*/
 

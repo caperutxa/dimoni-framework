@@ -4,7 +4,7 @@
   <groupId>caperutxa.dimoni</groupId>
   <artifactId>framework</artifactId>
   <name>testing-framework</name>
-  <version>0.4.5</version>
+  <version>0.4.6</version>
   <build>
     <plugins>
       <plugin>

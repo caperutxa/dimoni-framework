@@ -40,24 +40,25 @@ public class Main {
 		
 		// get results
 		TestReport report = new TestReport();
-		report.prepareResultsForLogAndMail(Configuration.getListOfTests());
+		report.prepareResultsForLogAndMail(Configuration.componentsApplied ,Configuration.getListOfTests());
 		
 		// send mail summary (only if any test arise)
 		logResults(report.getMailAttached());
-		sendMail(report.getMailContent(), report.getMailAttached());
+		//sendMail(report.getMailContent(), report.getMailAttached());
+		sendMail(report);
 		
 		System.out.println("End");
 	}
-	
+
 	/**
-	 * Send mail with end test results
-	 * 
-	 * @param content
+	 * Send mail with the results
+	 *
+	 * @param report
 	 */
-	static void sendMail(String content, String fileAttached) {
+	static void sendMail(TestReport report) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
 		String fileName = "logs/summary_" + sdf.format(new Date());
-		writeDownSummaryToFile(fileAttached, fileName);
+		writeDownSummaryToFile(report.getMailAttached(), fileName);
 
 		if(!Configuration.frameworkProperties.getProperty("mail_send").equals("true"))
 			return;
@@ -83,12 +84,12 @@ public class Main {
 			for(String sendTo : recipients) {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 			}
-			message.setSubject("Test results");
+			message.setSubject(report.getMailSubject());
 			message.setFrom(new InternetAddress(from));
 
 			Multipart multi = new MimeMultipart();
 			MimeBodyPart body = new MimeBodyPart();
-			body.setContent(content, "text/html");
+			body.setContent(report.getMailContent(), "text/html");
 			multi.addBodyPart(body);
 			MimeBodyPart attach = new MimeBodyPart();
 			DataSource source = new FileDataSource(fileName);

@@ -27,7 +27,7 @@ public class TestReportTest {
 	@Test
 	public void showTestReportResults() {
 		List<TestModel> testList = addTestToTheList();
-		String out = report.prepareTestResults(testList);
+		String out = report.prepareTestResults("Test list", testList);
 
 		writeDownToFile(out, "logs/testReport1.html");
 		//Nothing to validate
@@ -38,8 +38,10 @@ public class TestReportTest {
 		Configuration.component = "all";
 		Configuration.getTestList();
 		setSuccessOrFailAtRandom(Configuration.getListOfTests());
-		String out = report.prepareTestResults(Configuration.getListOfTests());
-		String contentOut = report.createContentMail();
+		Configuration.componentsApplied = "Test title";
+		String out = report.prepareTestResults(Configuration.componentsApplied, Configuration.getListOfTests());
+		String contentOut = report.createContentMail(Configuration.componentsApplied);
+		report.getMailSubject(Configuration.componentsApplied);
 
 		writeDownToFile(out, "logs/testReport2.html");
 		writeDownToFile(contentOut, "logs/testContentReport2.html");
